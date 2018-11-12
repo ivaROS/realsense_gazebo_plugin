@@ -156,7 +156,7 @@ namespace
     info_msg.height = image.height;
     info_msg.width = image.width;
 
-    float focal = 463.889;
+    float focal = 554.383;
 
     info_msg.K[0] = focal;
     info_msg.K[4] = focal;
