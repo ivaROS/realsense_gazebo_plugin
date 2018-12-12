@@ -1,5 +1,6 @@
 #include "realsense_gazebo_plugin/gazebo_ros_realsense.h"
 #include <sensor_msgs/fill_image.h>
+#include <sensor_msgs/distortion_models.h>
 
 namespace
 {
@@ -51,7 +52,7 @@ void GazeboRosRealsense::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 void GazeboRosRealsense::OnNewFrame(const rendering::CameraPtr cam,
                                     const transport::PublisherPtr pub)
 {
-  common::Time current_time = this->world->SimTime();
+  common::Time current_time = this->world->GetSimTime();
 
   // identify camera
   std::string camera_id = extractCameraName(cam->Name());
@@ -96,7 +97,7 @@ void GazeboRosRealsense::OnNewFrame(const rendering::CameraPtr cam,
 void GazeboRosRealsense::OnNewDepthFrame()
 {
   // get current time
-  common::Time current_time = this->world->SimTime();
+  common::Time current_time = this->world->GetSimTime();
 
   RealSensePlugin::OnNewDepthFrame();
 
@@ -155,6 +156,9 @@ namespace
     info_msg.P[2] = info_msg.K[2];
     info_msg.P[6] = info_msg.K[5];
     info_msg.P[10] = info_msg.K[8];
+    
+    info_msg.D.resize(5);
+    info_msg.distortion_model=sensor_msgs::distortion_models::PLUMB_BOB;
 
     return info_msg;
   }
