@@ -35,6 +35,7 @@ RealSensePluginPt::RealSensePluginPt() {
   this->ired2Cam = nullptr;
   this->colorCam = nullptr;
   this->prefix = "";
+  this->baseline_ = 0.05;
   this->pointCloudCutOffMax_ = 5.0;
 }
 
@@ -104,6 +105,8 @@ void RealSensePluginPt::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
       _sdf->GetValue()->Get(rangeMinDepth_);
     else if (name == "rangeMaxDepth")
       _sdf->GetValue()->Get(rangeMaxDepth_);
+    else if (name == "baseline")
+      _sdf->GetValue()->Get(baseline_);
     else if (name == "pointCloud")
       _sdf->GetValue()->Get(pointCloud_);
     else if (name == "pointCloudTopicName")
@@ -117,8 +120,8 @@ void RealSensePluginPt::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
     else if (name == "robotNamespace")
       break;
     else
-      throw std::runtime_error("Ivalid parameter for ReakSensePlugin");
-
+      throw std::runtime_error("Ivalid parameter for RealSensePlugin");
+    
     _sdf = _sdf->GetNextElement();
   } while (_sdf);
 

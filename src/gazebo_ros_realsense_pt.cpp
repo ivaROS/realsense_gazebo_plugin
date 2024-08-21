@@ -102,6 +102,9 @@ void GazeboRosRealsensePt::OnNewFrame(const rendering::CameraPtr cam,
   // publish to ROS
   auto camera_info_msg =
       cameraInfo(this->image_msg_, cameras.at(camera_id)->HFOV().Radian());
+  if(camera_id == IRED2_CAMERA_NAME)
+    camera_info_msg.P[3] = - camera_info_msg.P[0] * this->baseline_;
+
   image_pub->publish(this->image_msg_, camera_info_msg);
 }
 
